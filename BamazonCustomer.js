@@ -3,30 +3,39 @@ var mysql = require('mysql');
 
 //create database connection
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'bamazon'
+    host: "localhost",
+    port: 3306,
+    user: "root", //Your username
+    password: "", //Your password
+    database: "bamazon"
 });
 
-//connect to database
 connection.connect(function(err) {
+    if (err) throw err;
+    console.log("connected as id " + connection.threadId);
+});
+//array for products
+var productsArray = [];
+
+connection.query('SELECT * FROM `products`',function(err, res){
   if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
+    throw err;
   }
- 
-  console.log('connected as id ' + connection.threadId);
+  console.log('Results: ', res);
 });
 
+/*
 //require cli-table
 var Table = require('cli-table');
 
-//instantiate table
+// instantiate 
 var table = new Table({
-	head: ['TH 1 label', 'TH 2 label'],
-	colWidths: [100, 200]
+    head: ['Product Name', 'Department Name', 'Price', 'Quantity in Stock']
+  , colWidths: [100, 200]
 });
+*/
+
+
 
 //end connection
 connection.end();
